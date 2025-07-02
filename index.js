@@ -9,7 +9,7 @@ dotenv.config();
 const app = express();
 const PORT = process.env.PORT || 3000;
 app.get('/', (req, res) => res.send('Bot is running!'));
-app.listen(PORT, () => console.log(`Web server listening on port ${PORT}`));
+app.listen(PORT, () => console.log(`🌐 Web server listening on port ${PORT}`));
 
 // Discord bot setup
 const client = new Client({
@@ -48,4 +48,21 @@ client.on('messageCreate', async message => {
   }
 });
 
-client.login(process.env.BOT_TOKEN);
+// 💡 Resilient login with auto-retry
+const loginBot = () => {
+  client.login(process.env.BOT_TOKEN).catch(err => {
+    console.error('❌ Login failed:', err.message);
+    setTimeout(loginBot, 10000); // retry in 10 seconds
+  });
+};
+
+loginBot();
+
+// 💥 Global error handling to prevent silent crashes
+process.on('unhandledRejection', (err) => {
+  console.error('💥 Unhandled Rejection:', err);
+});
+
+process.on('uncaughtException', (err) => {
+  console.error('💥 Uncaught Exception:', err);
+});
