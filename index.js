@@ -27,11 +27,15 @@ client.once('ready', () => {
 client.on('messageCreate', async message => {
   if (message.author.bot) return;
 
+  // Only allow messages from a specific channel
+  if (message.channel.id !== '1389982292222545920') return;
+
   const content = message.content;
   const image = message.attachments.first()?.url;
 
   const payload = {
     username: message.author.username,
+    avatar_url: message.author.displayAvatarURL({ format: 'png' }),
     content: content,
     embeds: image ? [{ image: { url: image } }] : []
   };
