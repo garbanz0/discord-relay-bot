@@ -28,7 +28,7 @@ client.on('messageCreate', async message => {
   if (message.author.bot) return;
 
   // Only allow messages from a specific channel
-  if (message.channel.id !== '1389982292222545920') return;
+  if (message.channel.id !== '1383297659581763605') return;
 
   const content = message.content;
   const image = message.attachments.first()?.url;
